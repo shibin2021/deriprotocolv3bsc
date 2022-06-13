@@ -41,27 +41,27 @@ export const initBTokens = (pool: Pool) : void => {
   vault.venusOracle = venusControllerContract.oracle()
   vault.save()
 
-  const venusOracleContract = VenusOracleAbi.bind(Address.fromBytes(vault.venusOracle))
-  const allAssets = venusControllerContract.getAllMarkets()
-  for (let i = 0; i < allAssets.length; i++) {
-    const asset = allAssets[i]
-    const market = (asset == pool.tokenB0) ? pool.marketB0 : (asset == pool.tokenWETH) ? pool.marketWETH : contract.markets(asset)
+  // const venusOracleContract = VenusOracleAbi.bind(Address.fromBytes(vault.venusOracle))
+  const allMarkets = venusControllerContract.getAllMarkets()
+  for (let i = 0; i < allMarkets.length; i++) {
+    const market = allMarkets[i]
+    const marketContract = VenusVTokenAbi.bind(Address.fromBytes(market))
+    const asset = (market == pool.marketB0) ? pool.tokenB0: (market == pool.marketWETH) ? pool.tokenWETH: marketContract.underlying()
 
     // ignore not support market
-    if (market == Bytes.fromHexString(ZERO_ADDRESS)) {
+    const bTokenContract = ERC20Abi.bind(Address.fromBytes(asset))
+    if (contract.markets(Address.fromBytes(asset)) != market) {
       continue
     }
     const bToken = getOrInitBToken(asset)
-    const bTokenContract = ERC20Abi.bind(Address.fromBytes(asset))
-    const marketContract = VenusVTokenAbi.bind(Address.fromBytes(market))
     bToken.bToken = asset
     bToken.bTokenSymbol = bTokenContract.symbol()
     bToken.bTokenDecimals = bTokenContract.decimals()
     bToken.market = market
     bToken.marketSymbol = marketContract.symbol()
     bToken.marketDecimals = marketContract.decimals()
-    bToken.bTokenPrice = formatDecimal(venusOracleContract.getUnderlyingPrice(asset))
-    bToken.exchangeRate = formatDecimal(marketContract.exchangeRateStored())
+    // bToken.bTokenPrice = formatDecimal(venusOracleContract.getUnderlyingPrice(asset))
+    // bToken.exchangeRate = formatDecimal(marketContract.exchangeRateStored())
     bToken.pool = pool.id
     bToken.save()
   }
