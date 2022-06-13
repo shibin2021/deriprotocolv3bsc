@@ -1,0 +1,17 @@
+{
+  "name": "deriprotocolv3bsc",
+  "license": "UNLICENSED",
+  "scripts": {
+    "codegen": "graph codegen",
+    "build": "graph build",
+    "deploy": "graph deploy --product hosted-service shibin2021/deriprotocolv3bsc",
+    "deploy_old": "graph deploy --node https://api.thegraph.com/deploy/shibin2021/deriprotocolv3bsc",
+    "create-local": "graph create --node http://localhost:8020/ shibin2021/deriprotocolv3bsc",
+    "remove-local": "graph remove --node http://localhost:8020/ shibin2021/deriprotocolv3bsc",
+    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 shibin2021/deriprotocolv3bsc"
+  },
+  "dependencies": {
+    "@graphprotocol/graph-cli": "0.29.2",
+    "@graphprotocol/graph-ts": "0.26.0"
+  }
+}

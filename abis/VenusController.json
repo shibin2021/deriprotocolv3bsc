@@ -1,0 +1,24 @@
+[
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "getAllMarkets",
+    "outputs": [
+      { "internalType": "contract VToken[]", "name": "", "type": "address[]" }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "oracle",
+    "outputs": [
+      { "internalType": "contract PriceOracle", "name": "", "type": "address" }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  }
+]

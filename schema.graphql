@@ -1,0 +1,242 @@
+type DToken @entity {
+  id: ID!
+  name: String!
+  ownerTokenId: [OwnerTokenId!]! @derivedFrom(field: "token")
+}
+
+type OwnerTokenId @entity {
+  id: ID!
+  owner: Bytes!
+  tokenId: String!
+  token: DToken!
+  vault: Bytes!
+  amountB0: BigDecimal!
+  liquidity: BigDecimal!
+  cumulativePnlPerLiquidity: BigDecimal!
+  vaultLiquidity: BigDecimal!
+  timestamp: Int!
+}
+
+type Vault @entity {
+  id: ID!
+  venusComptroller: Bytes!
+  venusOracle: Bytes!
+}
+
+type BToken @entity {
+  id: ID!
+  bToken: Bytes!
+  bTokenSymbol: String!
+  bTokenDecimals: Int!
+  market: Bytes!
+  marketSymbol: String!
+  marketDecimals: Int!
+  bTokenPrice: BigDecimal!
+  collateralFactor: BigDecimal!
+  exchangeRate: BigDecimal!
+  pool: Pool!
+}
+
+type Symbol @entity {
+  id: ID!
+  category: String!
+  symbol: String!
+  symbolAddress: Bytes!
+  manager: Bytes!
+  oracleManager: Bytes!
+  symbolId: Bytes!
+  feeRatio: BigDecimal!
+  alpha: BigDecimal!
+  fundingPeriod: BigInt!
+  minTradeVolume: BigDecimal!
+  minInitialMarginRatio: BigDecimal!
+  initialMarginRatio: BigDecimal!
+  maintenanceMarginRatio: BigDecimal!
+  pricePercentThreshold: BigDecimal!
+  timeThreshold: BigInt!
+  isCloseOnly: Boolean!
+  priceId: Bytes!
+  volatilityId: Bytes!
+  feeRatioITM: BigDecimal!
+  feeRatioOTM: BigDecimal!
+  strikePrice: BigDecimal!
+  isCall: Boolean!
+  power: BigInt!
+
+  netVolume: BigDecimal!
+  netCost: BigDecimal!
+  indexPrice: BigDecimal!
+  fundingTimestamp: BigInt!
+  cumulativeFundingPerVolume: BigInt!
+  tradersPnl: BigDecimal!
+  initialMarginRequired: BigDecimal!
+  nPositionHolders: BigInt!
+
+  pool: Pool!
+}
+
+type LiquidityHistory @entity {
+  id: ID!
+  pool: Pool!
+  account: Bytes!
+  action: String!
+  bToken: Bytes!
+  bTokenSymbol: String!
+  lTokenId: BigInt!
+  amount: BigDecimal!
+  newLiquidity: BigDecimal!
+  txHash: Bytes!
+  timestamp: Int!
+}
+
+type Liquidity @entity {
+  id: ID!
+  pool: Pool!
+  account: Bytes!
+  poolAccount: PoolAccount!
+  # account: Bytes!
+  bToken: Bytes!
+  bTokenSymbol: String!
+  lTokenId: BigInt!
+  liquidity: BigDecimal!
+  timestamp: Int!
+}
+
+
+type MarginHistory @entity {
+  id: ID!
+  pool: Pool!
+  account: Bytes!
+  action: String!
+  bToken: Bytes!
+  bTokenSymbol: String!
+  pTokenId: BigInt!
+  amount: BigDecimal!
+  newMargin: BigDecimal!
+  txHash: Bytes!
+  timestamp: Int!
+}
+
+type Margin @entity {
+  id: ID!
+  pool: Pool!
+  account: Bytes!
+  poolAccount: PoolAccount!
+  # account: Bytes!
+  bToken: Bytes!
+  bTokenSymbol: String!
+  pTokenId: BigInt!
+  margin: BigDecimal!
+  timestamp: Int!
+}
+
+type TradeHistory @entity {
+  id: ID!
+  pool: Pool!
+  action: String!
+  account: Bytes!
+  symbol: String!
+  symbolId: Bytes!
+  pTokenId: BigInt!
+  indexPrice: BigDecimal!
+  tradeVolume: BigDecimal!
+  tradeCost: BigDecimal!
+  tradeFee: BigDecimal!
+  txHash: Bytes!
+  timestamp: Int!
+}
+
+type Position @entity {
+  id: ID!
+  pool: Pool!
+  account: Bytes!
+  poolAccount: PoolAccount!
+  symbol: String!
+  symbolId: Bytes!
+  pTokenId: BigInt!
+  volume: BigDecimal!
+  timestamp: Int!
+}
+
+type Pool @entity {
+  id: ID!
+  admin: Bytes!
+  implementation: Bytes!
+  # addresses
+  pToken: DToken!
+  lToken: DToken!
+  symbolManager: SymbolManager!
+  swapper: Bytes!
+  tokenB0: Bytes!
+  tokenWETH: Bytes!
+  marketB0: Bytes!
+  marketWETH: Bytes!
+  vaultImplementation: Bytes!
+  protocolFeeCollector: Bytes!
+  # parameter
+  reserveRatioB0: BigDecimal!
+  minRatioB0: BigDecimal!
+  poolInitialMarginMultiplier: BigDecimal!
+  protocolFeeCollectRatio: BigDecimal!
+  minLiquidationReward: BigDecimal!
+  maxLiquidationReward: BigDecimal!
+  liquidationRewardCutRatio: BigDecimal!
+  # bToken & symbols
+  bTokens: [BToken!]! @derivedFrom(field: "pool")
+  # state
+  poolLiquidity: BigDecimal!
+  lpsPnl: BigDecimal!
+  cumulativePnlPerLiquidity: BigInt
+  initialMarginRequired: BigDecimal!
+  protocolFeeAccrued: BigDecimal!
+  # state details
+  margin: [Margin!]! @derivedFrom(field: "pool")
+  position: [Position!]! @derivedFrom(field: "pool")
+  liquidity: [Liquidity!]! @derivedFrom(field: "pool")
+  # events
+  liquidityHistory: [LiquidityHistory!]! @derivedFrom(field: "pool")
+  marginHistory: [MarginHistory!]! @derivedFrom(field: "pool")
+  tradeHistory: [TradeHistory!]! @derivedFrom(field: "pool")
+}
+
+type SymbolManager @entity {
+  id: ID!
+  pool: Pool!
+  length: BigInt!
+}
+
+type PoolAccount @entity {
+  id: ID!
+  account: Account!
+  pool: Pool!
+  # lp
+  lTokenId: BigInt!
+  # lpVault: Bytes!
+  # lpAmountB0: BigDecimal!
+  # liquidity: BigDecimal!
+  # cumulativePnlPerLiquidity: BigInt!
+  # lpVaultLiquidity: BigDecimal!
+  liquidities: [Liquidity!]! @derivedFrom(field: "poolAccount")
+  # trader
+  pTokenId: BigInt!
+  # tdVault: Bytes!
+  # tdAmountB0: BigDecimal!
+  # tdVaultLiquidity: BigDecimal!
+  margins: [Margin!]! @derivedFrom(field: "poolAccount")
+  positions: [Position!]! @derivedFrom(field: "poolAccount")
+}
+
+type Account @entity {
+  id: ID!
+  pools: [PoolAccount!]! @derivedFrom(field: "account")
+}
+
+type IdToName @entity {
+  id: ID!
+  Name: String!
+}
+
+type NameToCId @entity {
+  id: ID!
+  CId: Bytes!
+}

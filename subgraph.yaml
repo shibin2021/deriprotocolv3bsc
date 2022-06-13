@@ -1,0 +1,129 @@
+specVersion: 0.0.2
+schema:
+  file: ./schema.graphql
+dataSources:
+  # === Pool
+  - kind: ethereum
+    name: Pool
+    network: arbitrum-one
+    source:
+      address: "0x243681B8Cd79E3823fF574e07B2378B8Ab292c1E"
+      abi: PoolAbi
+      startBlock: 13930215
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - Pool
+        - BToken
+        - Symbol
+        - Liquidity
+        - Margin
+        - Position
+      abis:
+        - name: PoolAbi
+          file: ./abis/Pool.json
+        - name: DTokenAbi
+          file: ./abis/DToken.json
+        - name: SymbolManagerAbi
+          file: ./abis/SymbolManager.json
+        - name: SymbolAbi
+          file: ./abis/Symbol.json
+        - name: VaultAbi
+          file: ./abis/Vault.json
+        - name: VenusControllerAbi 
+          file: ./abis/VenusController.json
+        - name: VenusOracleAbi
+          file: ./abis/VenusOracle.json
+        - name: VenusVTokenAbi
+          file: ./abis/VenusVToken.json
+        - name: ERC20Abi
+          file: ./abis/ERC20.json
+      eventHandlers:
+        - event: NewAdmin(indexed address)
+          handler: handlePoolNewAdmin
+        - event: NewImplementation(address)
+          handler: handlePoolNewImplementation
+        - event: AddMarket(indexed address)
+          handler: handleAddMarket
+        - event: AddLiquidity(indexed uint256,indexed address,uint256,int256)
+          handler: handlePoolAddLiquidity
+        - event: RemoveLiquidity(indexed uint256,indexed address,uint256,int256)
+          handler: handlePoolRemoveLiquidity
+        - event: AddMargin(indexed uint256,indexed address,uint256,int256)
+          handler: handlePoolAddMargin
+        - event: RemoveMargin(indexed uint256,indexed address,uint256,int256)
+          handler: handlePoolRemoveMargin
+      file: ./src/mapping/pool.ts
+  # === SymbolManager
+  - kind: ethereum
+    name: SymbolManager
+    network: arbitrum-one
+    source:
+      address: "0x543A9FA25ba9a16612274DD707Ac4462eD6988FA"
+      abi: SymbolManagerAbi
+      startBlock: 13930215
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - Pool
+      abis:
+        - name: SymbolManagerAbi
+          file: ./abis/SymbolManager.json
+        - name: SymbolAbi
+          file: ./abis/Symbol.json
+      eventHandlers:
+        - event: Trade(indexed uint256,indexed bytes32,int256,int256,int256,int256)
+          handler: handlePoolTrade
+        - event: AddSymbol(indexed bytes32,indexed address)
+          handler: handleAddSymbol
+        - event: RemoveSymbol(indexed bytes32,indexed address)
+          handler: handleRemoveSymbol
+      file: ./src/mapping/symbol_manager.ts
+  # === PToken
+  - kind: ethereum
+    name: DTokenP
+    network: arbitrum-one
+    source:
+      address: "0x25d5aD687068799739FF7B0e18C7cbff403AcB64"
+      abi: DTokenAbi
+      startBlock: 13930215
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - DToken
+        - OwnerTokenId
+      abis:
+        - name: DTokenAbi
+          file: ./abis/DToken.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleDTokenTransder
+      file: ./src/mapping/dtoken.ts
+  # === LToken
+  - kind: ethereum
+    name: DTokenL
+    network: arbitrum-one
+    source:
+      address: "0xc5b1dE3769921E8b43222e3C221ab495193440C0"
+      abi: DTokenAbi
+      startBlock: 13930215
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - DToken
+        - OwnerTokenId
+      abis:
+        - name: DTokenAbi
+          file: ./abis/DToken.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleDTokenTransder
+      file: ./src/mapping/dtoken.ts
