@@ -5,7 +5,7 @@ dataSources:
   # === Pool
   - kind: ethereum
     name: Pool
-    network: arbitrum-one
+    network: bsc
     source:
       address: "0x243681B8Cd79E3823fF574e07B2378B8Ab292c1E"
       abi: PoolAbi
@@ -59,7 +59,7 @@ dataSources:
   # === SymbolManager
   - kind: ethereum
     name: SymbolManager
-    network: arbitrum-one
+    network: bsc
     source:
       address: "0x543A9FA25ba9a16612274DD707Ac4462eD6988FA"
       abi: SymbolManagerAbi
@@ -86,7 +86,7 @@ dataSources:
   # === PToken
   - kind: ethereum
     name: DTokenP
-    network: arbitrum-one
+    network: bsc
     source:
       address: "0x25d5aD687068799739FF7B0e18C7cbff403AcB64"
       abi: DTokenAbi
@@ -108,7 +108,7 @@ dataSources:
   # === LToken
   - kind: ethereum
     name: DTokenL
-    network: arbitrum-one
+    network: bsc
     source:
       address: "0xc5b1dE3769921E8b43222e3C221ab495193440C0"
       abi: DTokenAbi

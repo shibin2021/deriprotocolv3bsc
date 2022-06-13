@@ -307,6 +307,21 @@ export class PoolAbi extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
+  decimalsB0(): i32 {
+    let result = super.call("decimalsB0", "decimalsB0():(uint8)", []);
+
+    return result[0].toI32();
+  }
+
+  try_decimalsB0(): ethereum.CallResult<i32> {
+    let result = super.tryCall("decimalsB0", "decimalsB0():(uint8)", []);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toI32());
+  }
+
   implementation(): Address {
     let result = super.call("implementation", "implementation():(address)", []);
 
@@ -581,6 +596,21 @@ export class PoolAbi extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
+  privileger(): Address {
+    let result = super.call("privileger", "privileger():(address)", []);
+
+    return result[0].toAddress();
+  }
+
+  try_privileger(): ethereum.CallResult<Address> {
+    let result = super.tryCall("privileger", "privileger():(address)", []);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toAddress());
+  }
+
   protocolFeeAccrued(): BigInt {
     let result = super.call(
       "protocolFeeAccrued",
@@ -669,6 +699,21 @@ export class PoolAbi extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
+  rewardVault(): Address {
+    let result = super.call("rewardVault", "rewardVault():(address)", []);
+
+    return result[0].toAddress();
+  }
+
+  try_rewardVault(): ethereum.CallResult<Address> {
+    let result = super.tryCall("rewardVault", "rewardVault():(address)", []);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toAddress());
+  }
+
   swapper(): Address {
     let result = super.call("swapper", "swapper():(address)", []);
 
@@ -750,36 +795,6 @@ export class PoolAbi extends ethereum.SmartContract {
 
   try_tokenWETH(): ethereum.CallResult<Address> {
     let result = super.tryCall("tokenWETH", "tokenWETH():(address)", []);
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toAddress());
-  }
-
-  marketB0(): Address {
-    let result = super.call("marketB0", "marketB0():(address)", []);
-
-    return result[0].toAddress();
-  }
-
-  try_marketB0(): ethereum.CallResult<Address> {
-    let result = super.tryCall("marketB0", "marketB0():(address)", []);
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toAddress());
-  }
-
-  marketWETH(): Address {
-    let result = super.call("marketWETH", "marketWETH():(address)", []);
-
-    return result[0].toAddress();
-  }
-
-  try_marketWETH(): ethereum.CallResult<Address> {
-    let result = super.tryCall("marketWETH", "marketWETH():(address)", []);
     if (result.reverted) {
       return new ethereum.CallResult();
     }
