@@ -60,7 +60,7 @@ export const initBTokens = (pool: Pool) : void => {
     bToken.market = market
     bToken.marketSymbol = marketContract.symbol()
     bToken.marketDecimals = marketContract.decimals()
-    bToken.bTokenPrice = formatDecimal(venusOracleContract.getUnderlyingPrice(asset))
+    bToken.bTokenPrice = formatDecimal(venusOracleContract.getUnderlyingPrice(Address.fromBytes(asset)))
     bToken.exchangeRate = formatDecimal(marketContract.exchangeRateStored())
     bToken.pool = pool.id
     bToken.save()
