@@ -1,4 +1,4 @@
-import { Address, BigDecimal, BigInt, Bytes } from "@graphprotocol/graph-ts"
+import { Address, BigDecimal, BigInt, Bytes, log } from "@graphprotocol/graph-ts"
 import { SymbolManagerAbi } from "../../generated/Pool/SymbolManagerAbi"
 import { SymbolAbi } from "../../generated/Pool/SymbolAbi"
 import { Pool } from "../../generated/schema"
@@ -48,6 +48,7 @@ export const initBTokens = (pool: Pool) : void => {
     const marketContract = VenusVTokenAbi.bind(Address.fromBytes(market))
     const asset = (market == pool.marketB0) ? pool.tokenB0: (market == pool.marketWETH) ? pool.tokenWETH: marketContract.underlying()
 
+    log.info('- check market asset',  [market.toHexString(), asset.toHexString(), contract.markets(Address.fromBytes(asset)).toHexString()])
     // ignore not support market
     const bTokenContract = ERC20Abi.bind(Address.fromBytes(asset))
     if (contract.markets(Address.fromBytes(asset)) == market) {
