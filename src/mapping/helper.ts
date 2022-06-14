@@ -43,16 +43,19 @@ export const initBTokens = (pool: Pool) : void => {
 
   const venusOracleContract = VenusOracleAbi.bind(Address.fromBytes(vault.venusOracle))
   const allMarkets = venusControllerContract.getAllMarkets()
+
+  log.info('- check markets.length {}',  [allMarkets.length.toString()])
   for (let i = 0; i < allMarkets.length; i++) {
     const market = allMarkets[i]
     const marketContract = VenusVTokenAbi.bind(Address.fromBytes(market))
     const asset = (market == pool.marketB0) ? pool.tokenB0: (market == pool.marketWETH) ? pool.tokenWETH: marketContract.underlying()
 
-    log.info('- check market asset',  [market.toHexString(), asset.toHexString(), contract.markets(Address.fromBytes(asset)).toHexString()])
+    log.info('- check market {}, asset {}, check {}',  [market.toHexString(), asset.toHexString(), contract.markets(Address.fromBytes(asset)).toHexString()])
     // ignore not support market
-    const bTokenContract = ERC20Abi.bind(Address.fromBytes(asset))
     if (contract.markets(Address.fromBytes(asset)) == market) {
       const bToken = getOrInitBToken(asset)
+      const bTokenContract = ERC20Abi.bind(Address.fromBytes(asset))
+      log.info('- check hit asset {} {}',  [asset.toHexString(), bTokenContract.symbol() ])
       bToken.bToken = asset
       bToken.bTokenSymbol = bTokenContract.symbol()
       bToken.bTokenDecimals = bTokenContract.decimals()
