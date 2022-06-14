@@ -50,20 +50,19 @@ export const initBTokens = (pool: Pool) : void => {
 
     // ignore not support market
     const bTokenContract = ERC20Abi.bind(Address.fromBytes(asset))
-    if (contract.markets(Address.fromBytes(asset)) != market) {
-      continue
+    if (contract.markets(Address.fromBytes(asset)) == market) {
+      const bToken = getOrInitBToken(asset)
+      bToken.bToken = asset
+      bToken.bTokenSymbol = bTokenContract.symbol()
+      bToken.bTokenDecimals = bTokenContract.decimals()
+      bToken.market = market
+      bToken.marketSymbol = marketContract.symbol()
+      bToken.marketDecimals = marketContract.decimals()
+      bToken.bTokenPrice = formatDecimal(venusOracleContract.getUnderlyingPrice(Address.fromBytes(asset)))
+      bToken.exchangeRate = formatDecimal(marketContract.exchangeRateStored())
+      bToken.pool = pool.id
+      bToken.save()
     }
-    const bToken = getOrInitBToken(asset)
-    bToken.bToken = asset
-    bToken.bTokenSymbol = bTokenContract.symbol()
-    bToken.bTokenDecimals = bTokenContract.decimals()
-    bToken.market = market
-    bToken.marketSymbol = marketContract.symbol()
-    bToken.marketDecimals = marketContract.decimals()
-    bToken.bTokenPrice = formatDecimal(venusOracleContract.getUnderlyingPrice(Address.fromBytes(asset)))
-    bToken.exchangeRate = formatDecimal(marketContract.exchangeRateStored())
-    bToken.pool = pool.id
-    bToken.save()
   }
 }
 
