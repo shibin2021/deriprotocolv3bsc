@@ -41,7 +41,7 @@ export const initBTokens = (pool: Pool) : void => {
   vault.venusOracle = venusControllerContract.oracle()
   vault.save()
 
-  // const venusOracleContract = VenusOracleAbi.bind(Address.fromBytes(vault.venusOracle))
+  const venusOracleContract = VenusOracleAbi.bind(Address.fromBytes(vault.venusOracle))
   const allMarkets = venusControllerContract.getAllMarkets()
   for (let i = 0; i < allMarkets.length; i++) {
     const market = allMarkets[i]
@@ -60,8 +60,8 @@ export const initBTokens = (pool: Pool) : void => {
     bToken.market = market
     bToken.marketSymbol = marketContract.symbol()
     bToken.marketDecimals = marketContract.decimals()
-    // bToken.bTokenPrice = formatDecimal(venusOracleContract.getUnderlyingPrice(asset))
-    // bToken.exchangeRate = formatDecimal(marketContract.exchangeRateStored())
+    bToken.bTokenPrice = formatDecimal(venusOracleContract.getUnderlyingPrice(asset))
+    bToken.exchangeRate = formatDecimal(marketContract.exchangeRateStored())
     bToken.pool = pool.id
     bToken.save()
   }
