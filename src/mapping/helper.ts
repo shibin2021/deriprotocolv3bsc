@@ -52,7 +52,11 @@ export const initBTokens = (pool: Pool) : void => {
 
     log.info('- check market {}, asset {}, check {}',  [market.toHexString(), asset.toHexString(), contract.markets(Address.fromBytes(asset)).toHexString()])
     // ignore not support market
-    if (contract.markets(Address.fromBytes(asset)) == market) {
+    if (
+      asset == pool.tokenB0 ||
+      asset == pool.tokenWETH ||
+      contract.markets(Address.fromBytes(asset)) == market
+    ) {
       const bToken = getOrInitBToken(asset)
       const bTokenContract = ERC20Abi.bind(Address.fromBytes(asset))
       log.info('- check hit asset {} {}',  [asset.toHexString(), bTokenContract.symbol() ])
