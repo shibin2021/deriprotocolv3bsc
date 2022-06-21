@@ -5,11 +5,11 @@ dataSources:
   # === Pool
   - kind: ethereum
     name: Pool
-    network: bsc
+    network: {{network}}
     source:
-      address: "0x243681B8Cd79E3823fF574e07B2378B8Ab292c1E"
+      address: "{{poolAddress}}"
       abi: PoolAbi
-      startBlock: 13930215
+      startBlock: {{startBlock}}
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
@@ -59,11 +59,11 @@ dataSources:
   # === SymbolManager
   - kind: ethereum
     name: SymbolManager
-    network: bsc
+    network: {{network}}
     source:
-      address: "0x543A9FA25ba9a16612274DD707Ac4462eD6988FA"
+      address: "{{symbolManagerAddress}}"
       abi: SymbolManagerAbi
-      startBlock: 13930215
+      startBlock: {{startBlock}}
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
@@ -86,11 +86,11 @@ dataSources:
   # === PToken
   - kind: ethereum
     name: DTokenP
-    network: bsc
+    network: {{network}}
     source:
-      address: "0x25d5aD687068799739FF7B0e18C7cbff403AcB64"
+      address: "{{pTokenAddress}}"
       abi: DTokenAbi
-      startBlock: 13930215
+      startBlock: {{startBlock}}
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
@@ -108,11 +108,11 @@ dataSources:
   # === LToken
   - kind: ethereum
     name: DTokenL
-    network: bsc
+    network: {{network}}
     source:
-      address: "0xc5b1dE3769921E8b43222e3C221ab495193440C0"
+      address: "{{lTokenAddress}}"
       abi: DTokenAbi
-      startBlock: 13930215
+      startBlock: {{startBlock}}
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5

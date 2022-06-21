@@ -2,10 +2,13 @@
   "name": "deriprotocolv3bsc",
   "license": "UNLICENSED",
   "scripts": {
-    "codegen": "graph codegen",
-    "build": "graph build",
-    "deploy": "graph deploy --product hosted-service shibin2021/deriprotocolv3bsc",
-    "deploy_old": "graph deploy --node https://api.thegraph.com/deploy/shibin2021/deriprotocolv3bsc",
+    "subgraph:codegen": "graph codegen",
+    "subgraph:build": "graph build",
+    "subgraph:deploy:hosted": "echo $ACCESS_TOKEN && echo $SLUG && graph deploy --product hosted-service --access-token $ACCESS_TOKEN $SLUG",
+    "deploy_old": "graph deploy --product hosted-service shibin2021/deriprotocolv3bsc",
+    "prepare:subgraph": "mustache ./config/v3_${POOL_TYPE}.json ./templates/v3.subgraph.template.yaml > subgraph.yaml && rm -rf generated && npm run subgraph:codegen && npm run subgraph:build",
+    "deploy:hosted:main": "cross-env POOL_TYPE=main npm run prepare:subgraph && SLUG=shibin2021/deriprotocolv3bsc npm run subgraph:deploy:hosted",
+    "deploy:hosted:inno": "cross-env POOL_TYPE=inno npm run prepare:subgraph && SLUG=shibin2021/deriprotocolv3bscinno npm run subgraph:deploy:hosted",
     "create-local": "graph create --node http://localhost:8020/ shibin2021/deriprotocolv3bsc",
     "remove-local": "graph remove --node http://localhost:8020/ shibin2021/deriprotocolv3bsc",
     "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 shibin2021/deriprotocolv3bsc"

@@ -1,0 +1,8 @@
+{
+  "network": "bsc",
+  "poolAddress": "0x243681B8Cd79E3823fF574e07B2378B8Ab292c1E",
+  "symbolManagerAddress": "0x543A9FA25ba9a16612274DD707Ac4462eD6988FA",
+  "lTokenAddress": "0xc5b1dE3769921E8b43222e3C221ab495193440C0",
+  "pTokenAddress": "0x25d5aD687068799739FF7B0e18C7cbff403AcB64",
+  "startBlock": 13930215
+}
