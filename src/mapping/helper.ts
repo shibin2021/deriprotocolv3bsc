@@ -70,6 +70,9 @@ export const initBTokens = (pool: Pool) : void => {
       bToken.exchangeRate = formatDecimal(marketContract.exchangeRateStored())
       bToken.pool = pool.id
       bToken.save()
+      if (!pool.bTokensString.split(',').includes(asset.toHexString())) {
+        pool.bTokensString =  pool.bTokensString == "" ? asset.toHexString() : pool.bTokensString + "," + asset.toHexString()
+      }
     }
   }
 }
@@ -191,7 +194,7 @@ export function handleLiquidityAction<T> (event: T, action: string):void {
   const bTokenDecimals = bTokenState.bTokenDecimals
   const vTokenBalance  = formatDecimal(marketContract.balanceOf(Address.fromBytes(lpInfos.value0)))
   const exchangeRateStored = formatDecimal(marketContract.exchangeRateStored())
-  const assetBalance = vTokenBalance.times(exchangeRateStored).div(expToBigDecimal(marketContract.decimals()))
+  const assetBalance = vTokenBalance.times(exchangeRateStored)
   let liquidity = getOrInitLiquidity(lTokenId, bToken, event)
   liquidity.bToken = bToken
   liquidity.bTokenSymbol = bTokenSymbol
@@ -247,9 +250,9 @@ export function handleMarginAction<T> (event: T, action: string) :void {
   const bTokenDecimals = bTokenState.bTokenDecimals
   const vTokenBalance  = formatDecimal(marketContract.balanceOf(Address.fromBytes(tdInfos.value0)))
   const exchangeRateStored = formatDecimal(marketContract.exchangeRateStored())
-  const assetBalance = vTokenBalance.times(exchangeRateStored).div(expToBigDecimal(marketContract.decimals()))
+  const assetBalance = vTokenBalance.times(exchangeRateStored)
 
-  let margin = getOrInitMargin(pTokenId, bToken, event)
+  let margin = getOrInitMargin(pTokenId, bToken, event.address)
   margin.bToken = bToken
   margin.bTokenSymbol = bTokenSymbol
   margin.pTokenId = pTokenId

@@ -1575,6 +1575,15 @@ export class Pool extends Entity {
     this.set("bTokens", Value.fromStringArray(value));
   }
 
+  get bTokensString(): string {
+    let value = this.get("bTokensString");
+    return value!.toString();
+  }
+
+  set bTokensString(value: string) {
+    this.set("bTokensString", Value.fromString(value));
+  }
+
   get poolLiquidity(): BigDecimal {
     let value = this.get("poolLiquidity");
     return value!.toBigDecimal();
