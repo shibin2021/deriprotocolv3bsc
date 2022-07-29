@@ -54,7 +54,7 @@ export function handlePoolTrade(event: Trade): void {
     for (let i = 0; i < bTokens.length; i++) {
       const bToken = bTokens[i]
       const margin = getOrInitMargin(pTokenId, Bytes.fromHexString(bToken), Bytes.fromHexString(symbolManager.pool))
-      if (margin.margin != BigDecimal.fromString("0")) { 
+      if (margin.margin != BigDecimal.fromString("0")) {
         margin.margin = BigDecimal.fromString("0")
       }
     }
